@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Biblioteca</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link rel="stylesheet" href="sistema.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="main-layout">
+        <!-- MENU LATERAL ESTILOSO -->
+        <nav class="sidebar">
+            <h2><i class="fas fa-book"></i> BIBLIOTECA</h2>
+            <a href="#" onclick="abrirAba('lista'); return false;" class="active" id="menu-lista">
+                <i class="fas fa-book-open"></i> Livros
+            </a>
+            <a href="#" onclick="abrirAba('pegar'); return false;" id="menu-pegar">
+                <i class="fas fa-hand-holding-heart"></i> Pegar Livro
+            </a>
+
+            <!-- Menu Admin (inicialmente oculto) -->
+            <div class="admin-menu-sidebar hidden">
+                <div class="sidebar-divider">ADMINISTRAÇÃO</div>
+                <a href="#" onclick="abrirAba('cadastro'); return false;" id="menu-cadastro">
+                    <i class="fas fa-plus-circle"></i> Cadastrar Livro
+                </a>
+                <a href="#" onclick="abrirAba('devolver'); return false;" id="menu-devolver">
+                    <i class="fas fa-undo-alt"></i> Devolver Livro
+                </a>
+                <a href="#" onclick="abrirAba('quemPegou'); return false;" id="menu-quemPegou">
+                    <i class="fas fa-users"></i> Quem Pegou
+                </a>
+            </div>
+
+            <a href="#" onclick="sair(); return false;" style="margin-top: auto; color: #ff8888;">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </nav>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="content">
+            <div class="header-content">
+                <h1 id="welcomeMessage">Bem Vindo</h1>
+                <p>Sistema de Biblioteca - Gerencie seus empréstimos</p>
+            </div>
+
+            <!-- Aba Lista (todos) -->
+            <div class="aba" id="lista">
+                <div class="card-aba">
+                    <h2><i class="fas fa-book"></i> Livros Cadastrados</h2>
+                    <div class="filtro-container">
+                        <label>Filtrar por categoria:</label>
+                        <select id="filtroCategoria" onchange="mostrarLivros()">
+                            <option value="todos">Todos</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Fantasia">Fantasia</option>
+                            <option value="Distopia">Distopia</option>
+                            <option value="Ciência">Ciência</option>
+                            <option value="História">História</option>
+                        </select>
+                    </div>
+                    <div id="livrosCadastrados" class="livros-grid"></div>
+                </div>
+            </div>
+
+            <!-- Aba Pegar Livro  -->
+            <div class="aba hidden" id="pegar">
+                <div class="card-aba">
+                    <h2><i class="fas fa-hand-holding-heart"></i> Pegar Livro Emprestado</h2>
+
+                    <!-- Informações de limite -->
+                    <div class="info-box">
+                        <p><i class="fas fa-calendar-week"></i> Prazo de devolução: <strong>7 dias</strong></p>
+                        <p><i class="fas fa-exclamation-triangle"></i> Limite: <strong>3 livros por aluno</strong></p>
+                    </div>
+
+                    <!-- PESQUISA DETALHADA DE LIVROS -->
+                    <div class="campo">
+                        <label><i class="fas fa-search"></i> Pesquisar Livro:</label>
+                        <input type="text" id="pesquisaLivroPegar" placeholder="Digite nome, autor ou categoria..."
+                            onkeyup="filtrarLivrosPegar()">
+                    </div>
+
+                    <!-- Resultados da pesquisa -->
+                    <div id="resultadosPesquisaLivros" class="resultados-pesquisa"
+                        style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
+                        <!-- Resultados aparecerão aqui -->
+                    </div>
+
+                    <!-- Ou selecionar do dropdown -->
+                    <div class="campo">
+                        <label>Ou selecione do catálogo:</label>
+                        <select id="selectLivroPegar">
+                            <option value="">Selecione um livro</option>
+                        </select>
+                    </div>
+
+                    <!-- DADOS DO ALUNO (apenas para registro) -->
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #e0e0e0;">
+                        <h3>Dados do Aluno</h3>
+
+                        <div class="campo">
+                            <label><i class="fas fa-id-card"></i> Matrícula:</label>
+                            <input type="text" id="matriculaAluno" placeholder="Digite a matrícula do aluno">
+                        </div>
+
+                        <div class="campo">
+                            <label><i class="fas fa-user"></i> Nome do Aluno:</label>
+                            <input type="text" id="nomeAluno" placeholder="Nome completo do aluno">
+                        </div>
+
+                        <div class="campo">
+                            <label><i class="fas fa-building"></i> Turma:</label>
+                            <select id="turmaAluno">
+                                <option value="">Selecione a turma</option>
+                                <option value="1 Info">💻 1 Info</option>
+                                <option value="2 Info">💻 2 Info</option>
+                                <option value="3 Info">💻 3 Info</option>
+                                <option value="1 Adm">📊 1 Adm</option>
+                                <option value="2 Adm">📊 2 Adm</option>
+                                <option value="3 Adm">📊 3 Adm</option>
+                                <option value="1 Agro">🌱 1 Agro</option>
+                                 <option value="2 Agro">🌱 2 Agro</option>
+                                  <option value="3 Agro">🌱 3 Agro</option>
+                                <option value="1 Energia">⚡ 1 Energia</option>
+                                 <option value="2 Energia">⚡ 2 Energia</option>
+                                  <option value="3 Energia">⚡ 3 Energia</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Botão de empréstimo -->
+                    <button onclick="pegarLivroADM()" class="btn-primary" style="margin-top: 20px;">
+                        <i class="fas fa-check"></i> Confirmar Empréstimo
+                    </button>
+
+                    <div id="mensagemPegar" class="mensagem"></div>
+                </div>
+            </div>
+
+            <!-- Aba Cadastro (só admin) -->
+            <div class="aba hidden" id="cadastro">
+                <div class="card-aba">
+                    <h2><i class="fas fa-plus-circle"></i> Cadastrar Novo Livro</h2>
+
+                    <!-- Informações de quantidade -->
+                    <div class="info-box" style="background: #e3f2fd; margin-bottom: 20px;">
+                        <p><i class="fas fa-info-circle"></i> Use a quantidade para cadastrar múltiplas cópias do mesmo
+                            livro.</p>
+                    </div>
+
+                    <div class="campo">
+                        <label>Nome do livro:</label>
+                        <input type="text" id="novoLivro" placeholder="Digite o nome do livro">
+                    </div>
+
+                    <div class="campo">
+                        <label>Autor:</label>
+                        <input type="text" id="autorLivro" placeholder="Digite o nome do autor">
+                    </div>
+
+                    <div class="campo">
+                        <label>Categoria:</label>
+                        <select id="categoriaLivro">
+                            <option value="">Selecione a categoria</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Fantasia">Fantasia</option>
+                            <option value="Distopia">Distopia</option>
+                            <option value="Ciência">Ciência</option>
+                            <option value="História">História</option>
+                            <option value="Técnico">Técnico</option>
+                            <option value="Didático">Didático</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label><i class="fas fa-layer-group"></i> Quantidade de cópias:</label>
+                        <input type="number" id="quantidadeLivro" min="1" max="50" value="1"
+                            placeholder="Número de cópias">
+                        <small style="color: #666;">Digite quantas cópias deseja cadastrar (máx: 50)</small>
+                    </div>
+
+                    <button onclick="adicionarLivro()" class="btn-primary">
+                        <i class="fas fa-save"></i> Cadastrar Livro(s)
+                    </button>
+
+                    <div id="mensagemCadastro" class="mensagem" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+
+            <!-- Aba Devolver (só admin) -->
+            <div class="aba hidden" id="devolver">
+                <div class="card-aba">
+                    <h2><i class="fas fa-undo-alt"></i> Devolver Livro (Admin)</h2>
+
+                    <div class="pesquisa-devolucao">
+                        <div class="campo">
+                            <label>Pesquisar por aluno:</label>
+                            <input type="text" id="pesquisaAluno" placeholder="Nome do aluno...">
+                        </div>
+                        <div class="campo">
+                            <label>Pesquisar por livro:</label>
+                            <input type="text" id="pesquisaLivro" placeholder="Nome do livro...">
+                        </div>
+                        <div class="botoes-pesquisa">
+                            <button onclick="pesquisarEmprestimos()" class="btn-secondary">
+                                <i class="fas fa-search"></i> Pesquisar
+                            </button>
+                            <button onclick="limparPesquisa()" class="btn-outline">
+                                <i class="fas fa-eraser"></i> Limpar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="resultadosPesquisa" class="resultados-pesquisa">
+                        <p class="text-center">🔍 Faça uma pesquisa para ver os livros emprestados</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba Quem Pegou  -->
+            <div class="aba hidden" id="quemPegou">
+                <div class="card-aba">
+                    <h2><i class="fas fa-users"></i> Livros Emprestados</h2>
+                    <div id="livrosEmprestados" class="tabela-container"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/dados.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/cadastroLivroAdmin.js"></script>
+    <script src="js/livros.js"></script>
+    <script src="js/pegarLivro.js"></script>
+    <script src="js/devolverAdmin.js"></script>
+    <script src="js/quemPegouAdmin.js"></script>
+
+    <script>
+        // Função para alternar abas e atualizar menu ativo
+        function abrirAba(aba) {
+            // Esconder todas as abas
+            document.querySelectorAll(".aba").forEach(div => {
+                div.classList.add("hidden");
+            });
+
+            // Remover active de todos os links do menu
+            document.querySelectorAll(".sidebar a").forEach(link => {
+                link.classList.remove("active");
+            });
+
+            // Mostrar a aba selecionada
+            document.getElementById(aba).classList.remove("hidden");
+
+            // Marcar o link correspondente no menu como ativo
+            const menuMap = {
+                'lista': 'menu-lista',
+                'pegar': 'menu-pegar',
+                'cadastro': 'menu-cadastro',
+                'devolver': 'menu-devolver',
+                'quemPegou': 'menu-quemPegou'
+            };
+
+            if (menuMap[aba]) {
+                const menuItem = document.getElementById(menuMap[aba]);
+                if (menuItem) menuItem.classList.add("active");
+            }
+
+            // Atualizar conteúdo específico das abas
+            if (aba === 'pegar' && typeof atualizarSelectPegarLivro === 'function') {
+                atualizarSelectPegarLivro();
+            } else if (aba === 'quemPegou' && typeof mostrarQuemPegou === 'function') {
+                mostrarQuemPegou();
+            } else if (aba === 'lista' && typeof mostrarLivros === 'function') {
+                mostrarLivros();
+            }
+        }
+
+        // Inicialização
+        window.onload = function () {
+            const usuarioLogado = verificarLogin();
+
+            const welcomeH1 = document.getElementById('welcomeMessage');
+            if (welcomeH1 && usuarioLogado) {
+                if (usuarioLogado.tipo === 'administrador') {
+                    welcomeH1.innerHTML = `Bem Vindo, Administrador ${usuarioLogado.usuario}!`;
+                    // Mostrar menu de admin na sidebar
+                    document.querySelector('.admin-menu-sidebar').classList.remove('hidden');
+
+
+
+                } else {
+                    welcomeH1.innerHTML = `Bem Vindo, ${usuarioLogado.usuario}! (${usuarioLogado.turma})`;
+                    document.querySelector('.admin-menu-sidebar').classList.add('hidden');
+                }
+            }
+
+            // Mostrar livros iniciais
+            if (typeof mostrarLivros === 'function') mostrarLivros();
+            if (typeof atualizarSelectPegarLivro === 'function') atualizarSelectPegarLivro();
+            if (typeof verificarPrazos === 'function') verificarPrazos();
+        };
+    </script>
+
+</body>
+
+</html>

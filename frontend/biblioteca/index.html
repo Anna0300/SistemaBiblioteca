@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca - Início</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body class="login-page">
+
+    <!-- ============================================= -->
+    <!-- PÁGINA INICIAL - BIBLIOTECA                   -->
+    <!-- ============================================= -->
+
+    <!-- Container principal -->
+    <div class="container-inicio">
+
+
+
+
+
+        <div class="login-card">
+            <div class="side-info">
+                <h1>Biblioteca</h1>
+                <p>Administração de Acervos</p>
+                <div class="course-grid">
+                    <div class="course-box"><i class="fas fa-book"></i> Catálogo</div>
+                    <div class="course-box"><i class="fas fa-book-reader"></i> Empréstimos</div>
+                    <div class="course-box"><i class="fas fa-book-open"></i> Reservas</div>
+                    <div class="course-box"><i class="fas fa-university"></i> Administração</div>
+
+                </div>
+            </div>
+            <div class="side-form">
+                <h2>Bem-vindo</h2>
+                <form id="loginForm" onsubmit="entrar(); return false;">
+                    <div class="input-group">
+                        <label>Usuário</label>
+                        <input id="usuario" type="text" placeholder="Digite seu usuario" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Senha</label>
+                        <input id="senha" type="password" placeholder="Senha" required>
+                    </div>
+                    <button type="submit">ENTRAR NO SISTEMA</button>
+
+
+
+                    
+                </form>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+
+</html>
